@@ -1,0 +1,78 @@
+======================================================================================
+        Read and Plot Environmental Parameters from RD-51 WinCC SLOCSY Project
+======================================================================================
+        
+        -- author : Nikos Karastathis  ( nkarast <at> cern <dot> ch )
+        -- version: 0.1.0
+        
+	NAME:
+        plotSLOCSY
+        
+        
+	SYNOPSIS:
+        python [-i] plotSLOCSY.py [-h] [--help] [-f argument] [--folder=argument]
+                                         [-i /path/to/file1.dat,/path/to/file2.dat,...] [--input=/path/to/file1.dat,/path/to/file2.dat,...]
+                                         [-r] [--useROOT] [-n] [--ntupleName=argument]
+        
+        
+        \033[1mDEPENDENCIES:\033[0m
+        Python v2 (preferably) and the modules: numpy, matplotlib, [ ROOT, root_numpy ]
+        To install the modules needed please do:
+        pip install numpy --upgrade && pip install matplotlib --upgrade && pip install root_numpy --upgrade
+        For ROOT bindings please read : https://root.cern.ch/drupal/content/pyroot
+        
+        
+        \033[1mDESCRIPTION:\033[0m
+        This is a code to read the files taken from the export panel of the Environmental Parameters of the
+        RD-51 WinCC SLOCSY. The script reads the input files and makes multiple plots and a summary one.
+        The input to the script can be given either as comma separated values, or as a folder that contains
+        all the input files. If no input is specified the script goes into debug mode with the hardcoded values
+        as input files. To change these look at the <sensors> class in the code.
+        The format of the input file is assumed to be "YYYY MM DD HH mm ss msms value", where all columns,
+        apart from 'value' are taken as integers.
+        
+        
+        \033[1mCOMMAND LINE OPTIONS:\033[0m
+        -h, --help
+                    Prints the usage for the script.. You kinda found it if you're reading this :)
+        
+        -f argument/ , --foler=argument/
+                    Read all files under folder argument/
+        
+        -i [argument1,argument2,...] , --input=[argument1,argument2,...]
+                    Read only the files specified in [argument1,argument2,...]. [argument1,argument2,...] is comma separated values, without blank spaces.
+
+        -r , --useROOT
+                    Use ROOT flag.
+        
+        -n argument , --ntupleName=argument
+                    Make a ROOT Ntuple to store values, with file name to be argument. Default filename [readEnvironmental.root]
+        
+        
+	EXAMPLES:
+
+	1) Run PlotSLOCSY with four input dat files. And make some plots
+		a) Open plotSLOCSY.py and change whatever plot flags you want.
+	
+		b) Run the command:
+			python plotSLOCSY.py -i BMP085.Pressure1_03_07.dat,DHT22.Humidity1_03_07.dat,BMP085.Temperature1_03_07.dat,DHT22.Temperature1_03_07.dat
+
+
+	2) Repeat <example 1> but now also write a ROOT file which contains trees for each. The ROOT file is names “out.root”
+		a) Open plotSLOCSY.py and change whatever plot flags you want.
+	
+		b) Run the command:
+			python plotSLOCSY.py -n out.root -i BMP085.Pressure1_03_07.dat,DHT22.Humidity1_03_07.dat,BMP085.Temperature1_03_07.dat,DHT22.Temperature1_03_07.dat
+
+
+	3) Run PlotSLOCSY over a whole folder of files and make some plots. The files are assumed to be named:
+		BMP085.Pressure1*
+		DHT22.Humidity1*
+		BMP085.Temperature1*
+		DHT22.Temperature1*
+		
+	   where * is the wildcard character. Then also write a ROOT ntuple named “out.root” .
+		a) Open plotSLOCSY.py and change whatever plot flags you want.
+	
+		b) Run the command:
+			python plotSLOCSY.py -n out.root -f input/
